@@ -1,0 +1,38 @@
+<h3>{{vm.title}}</h3>
+<hr>
+<button class="btn btn-link" ng-click="vm.logout();">Logout</button>
+<hr>
+Welcome, {{vm.currentUser.name}}
+<hr>
+<span ng-if="vm.message">{{vm.message}}</span>
+<hr>
+<h3>Update your information</h3>
+<label for="">Your name</label>
+<input type="text" style="width:200px;" ng-model="vm.currentUser.name" class="form-control">
+<br>
+<label for="">Your city</label>
+<input type="text" style="width:200px;" ng-model="vm.currentUser.city" class="form-control">
+<br>
+<label for="">Your state</label>
+<input type="text" style="width:200px;" ng-model="vm.currentUser.state" class="form-control">
+<br>
+<button id="update" style="width:200px;" ng-click="vm.updateLocation()" class="btn btn-success">Update</button>
+<hr>
+<h5>Books you have borrowed</h5>
+{{vm.currentUser.trades | json}}
+<ul>
+    <li></li>
+</ul>
+<hr>
+<h5>Books you own..</h5>
+<ul>
+    <li ng-repeat="book in vm.books">
+        <a href="/books/{{book._id}}">{{book.title}}</a> -- {{book.createdAt | date: 'medium'}}
+        <button ng-click="vm.removeBook(book._id)" class="btn btn-warning" ng-if="book.request.status < 2">Delete</button>
+        <div ng-if="book.requests.status === 0">not requested</div>
+        <div ng-if="book.requests.status === 1">requested by {{book.requests.borrower.name}}</div>
+        <div ng-if="book.requests.status === 2">Checked out to {{book.requests.borrower.name}}</div>
+        <button nf-if="book.requests.status < 2" ng-click="vm.acceptTrade(book)">Accept</button>
+        <button nf-if="book.requests.status < 2" ng-click="vm.refuseTrade(book)">Refuse</button>
+    </li>
+</ul>
